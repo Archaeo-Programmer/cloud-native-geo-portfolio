@@ -1,0 +1,11 @@
+# Data stays out of git; publish large outputs to object storage instead
+*.parquet
+*.duckdb
+*.zip
+*.pmtiles
+*.tif
+data/
+.venv/
+__pycache__/
+.DS_Store
+CLAUDE.md
