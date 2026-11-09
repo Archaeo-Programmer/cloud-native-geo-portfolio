@@ -48,6 +48,13 @@ counts as "in" the zone:
 | Any part of the footprint touches the zone ([count_by_risk.sql](count_by_risk.sql)) | 15,958 (4.8%) | 4,207 (1.3%) | 333,165 |
 | A point inside the footprint is in the zone ([count_by_risk_point.sql](count_by_risk_point.sql)) | 12,953 (3.9%) | 3,693 (1.1%) | 333,117 |
 
+![Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands, Milford, CT](map_milford_coast.png)
+
+*Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands State Park, Milford, CT.
+Dark red: a point inside the footprint is in the 1% zone. Orange: the building only partly touches it.
+Hatching marks FEMA's coastal wave zone (VE). Made in QGIS.
+Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreetMap contributors.*
+
 About 3,000 buildings (19% of the upper count) are edge cases: the floodplain clips part of the
 footprint but not its interior. Which number to use depends on the question. An insurer or
 emergency planner would want the upper bound, and a planning or assessment report would more
