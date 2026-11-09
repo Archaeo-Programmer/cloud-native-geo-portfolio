@@ -11,3 +11,4 @@ __pycache__/
 CLAUDE.md
 .env
 *.env
+*.state
