@@ -39,20 +39,27 @@ to join against other data. How many buildings in New Haven County sit in high-r
 
 ## Result
 
-Of **333,165 buildings** in New Haven County, **15,958 (4.8%)** touch FEMA's 1%-annual-chance flood
-zone and another **4,207 (1.3%)** touch the 0.2% zone ([results_by_risk.csv](results_by_risk.csv)).
+About **13,000 to 16,000 of New Haven County's 333,000 buildings** sit in FEMA's
+1%-annual-chance flood zone (the Special Flood Hazard Area). The range comes from how a building
+counts as "in" the zone:
 
-| Highest flood risk | Buildings | Share |
-| --- | --- | --- |
-| Minimal | 313,000 | 93.9% |
-| 1 percent flood zone (SFHA) | 15,958 | 4.8% |
-| 0.2 percent flood zone | 4,207 | 1.3% |
+| Rule | 1% flood zone | 0.2% flood zone | Buildings in county |
+| --- | --- | --- | --- |
+| Any part of the footprint touches the zone ([count_by_risk.sql](count_by_risk.sql)) | 15,958 (4.8%) | 4,207 (1.3%) | 333,165 |
+| A point inside the footprint is in the zone ([count_by_risk_point.sql](count_by_risk_point.sql)) | 12,953 (3.9%) | 3,693 (1.1%) | 333,117 |
 
-By FEMA zone (overlapping): X 321,858; AE 14,187; VE 1,361 (coastal wave action); A 1,054; AO 9.
-The whole county join runs in under a second on a laptop.
+About 3,000 buildings (19% of the upper count) are edge cases: the floodplain clips part of the
+footprint but not its interior. Which number to use depends on the question. An insurer or
+emergency planner would want the upper bound, and a planning or assessment report would more
+likely use the point rule. The point is made with `ST_PointOnSurface`, which, unlike
+`ST_Centroid`, always falls inside the building, even for L- or U-shaped footprints.
 
-"Touches" is an upper bound: a building partly in the zone counts. Overture includes outbuildings
-such as sheds, and coverage depends on OpenStreetMap.
+Each building is counted once, under its highest risk. By FEMA zone code (touch rule, overlapping):
+X 321,858; AE 14,187; VE 1,361 (coastal wave action); A 1,054; AO 9. Each county-wide join runs in
+under a second on a laptop. Results: [results_by_risk.csv](results_by_risk.csv),
+[results_by_risk_point.csv](results_by_risk_point.csv).
+
+Overture includes outbuildings such as sheds, and coverage depends on OpenStreetMap.
 
 Early benchmark from the workshop run: a point lookup took 0.09 ms with an R-tree index
 versus 78.63 ms without (about 870 times faster).
@@ -63,5 +70,4 @@ To do.
 
 ## Next steps
 
-- Compare with a stricter rule: count a building only if its center point is in the zone.
 - Save the 1% zone buildings as Hilbert-sorted GeoParquet and map them.
