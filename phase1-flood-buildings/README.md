@@ -104,7 +104,7 @@ buildings without assessor data are gray. Data: FEMA NFHL; Overture Maps (OpenSt
 - A building belongs to the parcel that holds the largest share of its footprint. Near-ties (within
   5 percentage points) go to the parcel with assessor data, then the smaller parcel.
 - If that parcel has no assessor data, the building gets none rather than borrowing a neighbor's
-  value. This left 79 buildings that sit mostly in an empty overlapping parcel unmatched.
+  value. This left 76 buildings that sit mostly in an empty overlapping parcel unmatched.
 - Values are summed once per parcel, so a house and its garage do not count the lot twice.
 - Total parcel value is much higher than building value partly because of a few large public
   parcels: the ten most valuable (a water utility site, state land, schools, a power plant) hold
@@ -133,15 +133,15 @@ county shapefiles, loading a building layer and running a manual select-by-locat
 it all when FEMA updates its maps. Here the whole pipeline is scripted: the buildings download in
 8 seconds, and the county-wide comparison reruns in under a second.
 
-A big part of the speed comes from the shape of the data. FEMA's flood polygons can be enormous,
-with the largest in New Haven County at 160,383 vertices, so every nearby building is tested
-against thousands of edges. Splitting them into pieces of at most 100 vertices gives the same
-answer much faster ([05_benchmark_subdivide.sql](scripts/05_benchmark_subdivide.sql)):
+A big part of the speed comes from the shape of the data. FEMA's flood polygons can be enormous:
+the largest in New Haven County has 160,383 vertices, and the largest high-risk one 17,199, so
+every nearby building is tested against thousands of edges. Splitting them into pieces of at most
+100 vertices gives the same answer much faster ([05_benchmark_subdivide.sql](scripts/05_benchmark_subdivide.sql)):
 
 | Flood zones used | Buildings touching the 1% zone | Time |
 | --- | --- | --- |
-| FEMA's original polygons (6,881 shapes) | 15,958 | 7.4 s |
-| Subdivided pieces (41,157, at most 100 vertices) | 15,958 | 0.07 s |
+| FEMA's original high-risk polygons (2,715 shapes) | 15,958 | 7.4 s |
+| Subdivided pieces (15,925, at most 100 vertices) | 15,958 | 0.07 s |
 
 The parcel data showed the same gap in data delivery. Connecticut publishes its parcels through
 a web service that returns 2,000 records per request; getting New Haven County's 284,920 parcels
