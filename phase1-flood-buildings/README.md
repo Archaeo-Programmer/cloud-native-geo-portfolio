@@ -9,8 +9,8 @@ I combined FEMA's flood maps with building footprints from Overture Maps and ran
 laptop, where the whole county takes under a second. Splitting FEMA's flood polygons into small
 pieces made that comparison about 100 times faster than using the shapefiles as FEMA publishes them,
 with identical results. Between 13,000 and 16,000 of the county's 333,000 buildings are in the
-1%-annual-chance flood zone. The range depends on whether a building has any part of it
-touching the zone or only when its center does; about 3,000 buildings fall in between. Along the
+1%-annual-chance flood zone. The range depends on whether any part of a building touches
+the zone or only its center; about 3,000 buildings fall in between. Along the
 shoreline, 460 homes are situated in FEMA's highest-risk coastal wave zone.
 
 ![Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands, Milford, CT](map_milford_coast.png)
@@ -32,6 +32,8 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreet
   or more. 460 are homes; 884 (65%) have no building type recorded in the source data.
 - **Floodplains reach well inland.** On the map, whole neighborhoods around the Silver Sands marsh
   are in the 1% zone even though they sit back from the beach.
+- **Critical infrastructure is exposed, not just homes:** the rail yard near Union Station and port
+  facilities around New Haven Harbor sit in the 1% zone.
 
 | How a building counts as "in" the zone | 1% flood zone | 0.2% flood zone |
 | --- | --- | --- |
@@ -40,6 +42,20 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreet
 
 Each building is counted once, under its highest risk. Results:
 [results_by_risk.csv](results_by_risk.csv), [results_by_risk_point.csv](results_by_risk_point.csv).
+
+## More maps
+
+![Buildings in FEMA's 1% flood zone along the West River, Westville, New Haven](Westville-flood.png)
+
+*West River, Westville, New Haven. The 1% flood zone follows the river miles inland, through
+residential streets and around commercial buildings. Dark red: center inside the 1% zone. Orange:
+partly in the zone. Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreetMap contributors.*
+
+![Buildings in FEMA's 1% flood zone around New Haven Harbor](new-haven-flood.png)
+
+*New Haven Harbor. The rail yard near Union Station, Long Wharf and port facilities on both shores,
+including what appear to be fuel storage tanks, sit in the 1% flood zone next to the coastal wave
+zone (hatched). Dark red: center inside the 1% zone. Orange: partly in the zone. Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreetMap contributors.*
 
 ## Why this approach
 
@@ -86,7 +102,7 @@ DuckDB 1.5.
   catalog in Phase 2.
 - **Summary tables** as CSV, by flood risk, for both counting rules.
 - **Reproducible SQL scripts** for every number on this page.
-- **Map** of the Milford coast (above).
+- **Maps** of the Milford coast, the West River in Westville and New Haven Harbor (above).
 
 ## Data notes and limitations
 
