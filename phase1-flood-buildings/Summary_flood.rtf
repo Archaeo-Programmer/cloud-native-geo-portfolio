@@ -1,0 +1,227 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Italic;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Menlo-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\i\fs22 \cf2 \CocoaLigature0 How many buildings in New Haven County, Connecticut, are located in FEMA's high-risk
+\f1\i0  
+\f0\i flood zone? I combined FEMA's flood maps with building footprints from Overture Maps and ran the analysis on a laptop, where the whole county takes
+\f1\i0  
+\f0\i under a second. Between 13,000 and 16,000 of the county's 333,000 buildings
+\f1\i0  
+\f0\i are in the 1%-annual-chance flood zone. The range depends on whether a building counts when any part of it touches the zone or only when its interior does; about 3,000 buildings fall in between. Along the shoreline, 460 homes are situated in FEMA's highest-risk coastal wave zone.
+\f1\i0 \
+\
+Evaluating flood risk can be difficult when data is large, hard to access, and long processing times. Luckily, there are new ways of accessing data much quicker with modern pipelines that allow for much quicker assessments, especially for knowing whether a given property or building is in flood danger. By using a combination of parquet files and faster data processing (through duckDB), we can quickly make these assessments. 13,000\'9616,000 of 333,000 buildings in the 1% flood zone, depending on the counting rule. The range is because I ran the model in two ways, where any part of the building polygon is touching the flood zone and where the center point of the building (using center point but the point must occur in the building) is touching the zone. This analysis shows which buildings are within high flood risk zones and which ones are in high risk costal wave zones (red buildings in the map), as well as other buildings that touch the high risk flood areas (about 460 homes in the coastal wave (VE) zone) (orange buildings in the map), which are the ~3,000 edge cases. County-wide joins run in under a second on a laptop. Data: FEMA NFHL and Overture Maps, processed with DuckDB and GeoParquet. \
+  \
+\
+ 
+\f2\b Who reads it and how.
+\f1\b0  A potential client or collaborator lands on this page\
+  and decides in about 30 seconds whether to keep reading. So a case study isn't\
+  a lab notebook in the order you did things. It's in the order a reader needs:\
+  
+\f2\b answer
+\f1\b0  
+\f2\b first,
+\f1\b0  
+\f2\b evidence
+\f1\b0  
+\f2\b next,
+\f1\b0  
+\f2\b technical
+\f1\b0  
+\f2\b details
+\f1\b0  
+\f2\b last.
+\f1\b0 \
+\
+  
+\f2\b Your
+\f1\b0  
+\f2\b current
+\f1\b0  
+\f2\b README
+\f1\b0  is a good lab notebook. Everything's in it and the length\
+  is right: about 600 words, and 600\'961,000 is the right range. The trouble is\
+  the order. It opens with shapefiles and coordinate systems, and the headline\
+  result (13,000\'9616,000 buildings) appears halfway down. A reader would leave\
+  before reaching it.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+ \
+
+\f2\b The
+\f1\b0  
+\f2\b structure
+\f1\b0  
+\f2\b to
+\f1\b0  
+\f2\b aim
+\f1\b0  
+\f2\b for:
+\f1\b0 \
+\
+  \uc0\u9484 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+  \uc0\u9474      Section      \u9474    Length    \u9474                 Purpose                \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b Summary
+\f1\b0           \uc0\u9474  3\'964         \u9474  The whole story: problem, what you    \u9474 \
+  \uc0\u9474                   \u9474  sentences   \u9474  did, the result, why it matters       \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b Map
+\f1\b0               \uc0\u9474  the image   \u9474  Moved up; it's the most compelling    \u9474 \
+  \uc0\u9474                   \u9474              \u9474  thing on the page                     \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b Key
+\f1\b0  
+\f2\b findings
+\f1\b0      \uc0\u9474  3\'964 bullets \u9474  Numbers a reader can quote            \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474                   \u9474  short       \u9474                                        \u9474 \
+  \uc0\u9474  
+\f2\b How
+\f1\b0  
+\f2\b it
+\f1\b0  
+\f2\b works
+\f1\b0      \uc0\u9474  numbered    \u9474  The pipeline, with links to your SQL  \u9474 \
+  \uc0\u9474                   \u9474  list        \u9474                                        \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b Deliverables
+\f1\b0      \uc0\u9474  short list  \u9474  What a client would receive           \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b Data
+\f1\b0  
+\f2\b notes
+\f1\b0  
+\f2\b and
+\f1\b0    \uc0\u9474              \u9474  Coordinate systems, edge cases,       \u9474 \
+  \uc0\u9474  
+\f2\b limitations
+\f1\b0       \uc0\u9474  bullets     \u9474  Overture coverage. Moved lower, where \u9474 \
+  \uc0\u9474                   \u9474              \u9474   technical readers still find them    \u9474 \
+  \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9532 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9508 \
+  \uc0\u9474  
+\f2\b What
+\f1\b0  
+\f2\b I'd
+\f1\b0  
+\f2\b do
+\f1\b0  
+\f2\b next
+\f1\b0  \uc0\u9474  2\'964 bullets \u9474  Shows judgment, and suggests          \u9474 \
+  \uc0\u9474                   \u9474              \u9474  follow-on work                        \u9474 \
+  \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9524 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+\
+  
+\f2\b Rule
+\f1\b0  
+\f2\b of
+\f1\b0  
+\f2\b thumb:
+\f1\b0  someone who reads only the summary and looks at the map should\
+  know what you did and what you found.\
+\
+  
+\f2\b Your
+\f1\b0  
+\f2\b turn:
+\f1\b0  
+\f2\b draft
+\f1\b0  
+\f2\b the
+\f1\b0  
+\f2\b summary.
+\f1\b0  It's the hardest and most valuable part, so it's\
+  yours. A formula that works:\
+\
+  1. 
+\f2\b The
+\f1\b0  
+\f2\b problem
+\f1\b0  
+\f2\b or
+\f1\b0  
+\f2\b question,
+\f1\b0  in plain words a non-GIS person would get: 
+\f0\i "How
+\f1\i0 \
+     
+\f0\i many
+\f1\i0  
+\f0\i buildings
+\f1\i0  
+\f0\i in
+\f1\i0  
+\f0\i New
+\f1\i0  
+\f0\i Haven
+\f1\i0  
+\f0\i County
+\f1\i0  
+\f0\i sit
+\f1\i0  
+\f0\i in
+\f1\i0  
+\f0\i FEMA's
+\f1\i0  
+\f0\i high-risk
+\f1\i0  
+\f0\i flood
+\f1\i0  
+\f0\i zone?"
+\f1\i0 \
+  2. 
+\f2\b What
+\f1\b0  
+\f2\b you
+\f1\b0  
+\f2\b did,
+\f1\b0  in one sentence naming the data and the main tools.\
+  3. 
+\f2\b The
+\f1\b0  
+\f2\b main
+\f1\b0  
+\f2\b result,
+\f1\b0  with the number. Use the range and say briefly why it's a\
+     range.\
+  4. 
+\f2\b Why
+\f1\b0  
+\f2\b it
+\f1\b0  
+\f2\b matters
+\f1\b0  
+\f2\b or
+\f1\b0  
+\f2\b what
+\f1\b0  
+\f2\b stands
+\f1\b0  
+\f2\b out:
+\f1\b0  the wave-zone homes, the method lesson,\
+     or the speed. Pick one.\
+\
+  Facts you can use:\
+  - 13,000\'9616,000 of 333,000 buildings in the 1% flood zone, depending on the\
+    counting rule.\
+  - About 3,000 edge cases.\
+  - 460 homes in the coastal wave (VE) zone.\
+  - County-wide joins run in under a second on a laptop.\
+  - Data: FEMA NFHL and Overture Maps, processed with DuckDB and GeoParquet.\
+\
+  Aim for 60\'9690 words, plain language, no jargon like "SFHA" or "ST_Intersects".\
+  Paste your draft here and I'll give feedback. Then we'll reorder the rest of\
+  the README together.\
+\
+\
+}
