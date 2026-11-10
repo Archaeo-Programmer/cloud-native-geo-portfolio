@@ -35,7 +35,7 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreet
 - **Critical infrastructure is exposed, not just homes:** the rail yard near Union Station and port
   facilities around New Haven Harbor sit in the 1% zone.
 - **$2.9 to $3.7 billion in assessed building value** (structures only, not land) sits on parcels
-  in the 1% flood zone, and $0.4 billion in the coastal wave zone (see [What's at risk](#whats-at-risk)).
+  in the 1% flood zone, and $415 million in the coastal wave zone (see [What's at risk](#whats-at-risk)).
 
 | How a building counts as "in" the zone | 1% flood zone | 0.2% flood zone |
 | --- | --- | --- |
@@ -54,10 +54,10 @@ Assessor records value each parcel in two parts: the **land** and the **building
 report leads with **building value**, because floods damage structures, not land. **Total parcel
 value** (land plus buildings) is shown for comparison only:
 
-| Value on parcels in the 1% flood zone | Strict rule | Touch rule | Coastal wave zone (VE) |
+| Value on parcels in the 1% flood zone | Touch rule | Strict rule | Coastal wave zone (VE) |
 | --- | --- | --- | --- |
-| **Building value** (structures only), the headline | **$2.86B** | **$3.71B** | **$0.41B** |
-| Total parcel value (land plus buildings) | $6.07B | $7.45B | $1.28B |
+| **Building value** (structures only), the headline | **$3.71B** | **$2.86B** | **$415M** |
+| Total parcel value (land plus buildings) | $7.45B | $6.07B | $1.28B |
 
 Connecticut assesses property at 70% of market value, so the building value is roughly $4.1 to
 $5.3 billion at market.
@@ -81,14 +81,14 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel La
 
 | Use | At-risk buildings | Building value, touch rule | Building value, strict rule | Building value in wave zone (VE) |
 | --- | --- | --- | --- | --- |
-| Residential: single-family and other | 11,071 | $1,620M | $1,289M | $290M |
+| Residential: single-family and other | 11,071 | $1.62B | $1.29B | $290M |
 | Commercial | 1,745 | $813M | $592M | $44M |
 | Government and tax-exempt | 856 | $745M | $579M | $26M |
 | Residential: multi-family | 952 | $281M | $223M | $23M |
 | Industrial | 561 | $171M | $128M | $30M |
-| Other (vacant, farm, recreation) | 229 | $70M | $38M | $0M |
-| Residential: condominium | 123 | $14M | $10M | $1M |
-| **Total** | **15,537** | **$3,714M** | **$2,859M** | **$415M** |
+| Other (vacant, farm, recreation) | 229 | $70M | $38M | $0 |
+| Residential: condominium | 123 | $14M | $10M | $0.8M |
+| **Total** | **15,537** | **$3.71B** | **$2.86B** | **$415M** |
 
 Assessed building value (structures only), counted once per parcel ([by_use.csv](results/by_use.csv)). 67 matched
 buildings have a parcel with no use code and are left out of the table.
