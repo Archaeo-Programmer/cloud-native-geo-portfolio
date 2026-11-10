@@ -12,3 +12,7 @@ CLAUDE.md
 .env
 *.env
 *.state
+
+# Local working files
+.Rhistory
+Summary_flood.rtf
