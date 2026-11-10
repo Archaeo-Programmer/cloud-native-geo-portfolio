@@ -34,7 +34,7 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreet
   are in the 1% zone even though they sit back from the beach.
 - **Critical infrastructure is exposed, not just homes:** the rail yard near Union Station and port
   facilities around New Haven Harbor sit in the 1% zone.
-- **$2.9 to $3.7 billion in assessed building value** (structures only, not land) sits on parcels
+- **$2.86 to $3.71 billion in assessed building value** (structures only, not land) sits on parcels
   in the 1% flood zone, and $415 million in the coastal wave zone (see [What's at risk](#whats-at-risk)).
 
 | How a building counts as "in" the zone | 1% flood zone | 0.2% flood zone |
@@ -76,7 +76,7 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel La
 - **Place:** New Haven ($597M in building value), Milford ($526M), Branford ($456M), Madison ($351M)
   and West Haven ($282M) lead ([by_town.csv](results/by_town.csv)).
 - **Age:** 81% of at-risk buildings with a known build year (11,721 of 14,541) were built before
-  1980, and 39% between 1900 and 1949. Most likely predate modern floodplain building standards
+  1980, and 42% between 1900 and 1949. Most likely predate modern floodplain building standards
   ([by_period_built.csv](results/by_period_built.csv)).
 
 | Use | At-risk buildings | Building value, touch rule | Building value, strict rule | Building value in wave zone (VE) |
