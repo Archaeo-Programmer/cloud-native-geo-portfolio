@@ -1,16 +1,16 @@
 -- Two map layers for QGIS showing assessed BUILDING value at risk (structures only, not land).
--- Input: newhaven_sfha_buildings_parcels.parquet (from join_parcels.sql), all at-risk buildings (touch rule).
+-- Input: newhaven_sfha_buildings_parcels.parquet (from scripts/09_join_parcels.sql), all at-risk buildings (touch rule).
 -- Outputs (local, not in git):
 --   map_buildings_value.parquet  one row per at-risk building; the main building on each parcel carries
 --                                the parcel's building value, other buildings on that parcel are "secondary"
 --   map_hex_value.parquet        H3 hexagons (resolution 8, about 0.7 km2) with total building value,
 --                                each parcel counted once, placed by its main building
--- Run with:  duckdb < map_value_layers.sql
+-- Run with:  duckdb < scripts/10_map_value_layers.sql
 INSTALL spatial; LOAD spatial;
 INSTALL h3 FROM community; LOAD h3;
 .timer on
 
-CREATE TABLE b AS SELECT * FROM 'newhaven_sfha_buildings_parcels.parquet';
+CREATE TABLE b AS SELECT * FROM 'data/newhaven_sfha_buildings_parcels.parquet';
 
 -- 1. Main building per parcel = the largest footprint (avoids shading a garage with the house's value)
 CREATE TABLE ranked AS
@@ -32,7 +32,7 @@ CREATE TABLE buildings_value AS
          geometry
   FROM ranked;
 
-COPY (SELECT * FROM buildings_value) TO 'map_buildings_value.parquet' (FORMAT parquet, COMPRESSION zstd);
+COPY (SELECT * FROM buildings_value) TO 'data/map_buildings_value.parquet' (FORMAT parquet, COMPRESSION zstd);
 
 -- 2. Hexagons: each parcel's building value, once, at its main building's interior point
 CREATE TABLE hex AS
@@ -48,10 +48,10 @@ COPY (
          round(building_value / 1e6, 1) AS building_value_millions,
          ST_SetCRS(ST_GeomFromText(h3_cell_to_boundary_wkt(h3_cell)), 'OGC:CRS84') AS geometry
   FROM hex
-) TO 'map_hex_value.parquet' (FORMAT parquet, COMPRESSION zstd);
+) TO 'data/map_hex_value.parquet' (FORMAT parquet, COMPRESSION zstd);
 
 -- 3. Checks
 SELECT value_class, count(*) AS buildings FROM buildings_value GROUP BY 1 ORDER BY 1;
 SELECT count(*) AS hexagons, sum(parcels) AS parcels, round(sum(building_value) / 1e9, 2) AS building_value_billions,
        round(max(building_value) / 1e6, 1) AS largest_hex_millions
-FROM 'map_hex_value.parquet';
+FROM 'data/map_hex_value.parquet';

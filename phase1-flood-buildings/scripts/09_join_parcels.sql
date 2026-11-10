@@ -7,7 +7,7 @@
 --   4. Values are summed once per parcel, never once per building.
 -- Headline value = assessed BUILDING value (what a flood can damage); total assessed value
 -- (land + buildings) is kept as context. CT assesses property at 70% of market value.
--- Run with:  duckdb < join_parcels.sql
+-- Run with:  duckdb < scripts/09_join_parcels.sql
 INSTALL spatial; LOAD spatial;
 .timer on
 
@@ -29,9 +29,9 @@ CREATE TABLE p AS
          END AS use_group,
          ST_Area(geometry) AS parcel_area,
          CASE WHEN ST_IsValid(geometry) THEN geometry ELSE ST_MakeValid(geometry) END AS geometry
-  FROM 'newhaven_parcels.parquet';
+  FROM 'data/newhaven_parcels.parquet';
 
-CREATE TABLE b AS SELECT * FROM 'newhaven_sfha_buildings.parquet';
+CREATE TABLE b AS SELECT * FROM 'data/newhaven_sfha_buildings.parquet';
 
 -- Share of each building's footprint inside each parcel it touches
 CREATE TABLE shares AS
@@ -66,7 +66,7 @@ CREATE TABLE out AS
   LEFT JOIN p ON p.parcel_id = pk.parcel_id AND pk.has_data;
 
 COPY (SELECT * FROM out ORDER BY ST_Hilbert(geometry, (SELECT ST_Extent(ST_Extent_Agg(geometry)) FROM out)))
-  TO 'newhaven_sfha_buildings_parcels.parquet' (FORMAT parquet, COMPRESSION zstd);
+  TO 'data/newhaven_sfha_buildings_parcels.parquet' (FORMAT parquet, COMPRESSION zstd);
 
 -- Coverage
 SELECT match_status, count(*) AS buildings, round(100.0 * count(*) / sum(count(*)) OVER (), 1) AS pct
@@ -93,7 +93,7 @@ COPY (
                sum(tvalue) AS total_assessed_value
         FROM parcel_flags GROUP BY 1) f USING (use_group)
   ORDER BY building_value DESC NULLS LAST
-) TO 'results_by_use.csv' (HEADER);
+) TO 'results/by_use.csv' (HEADER);
 
 -- By town (value once per parcel)
 COPY (
@@ -103,7 +103,7 @@ COPY (
                any_value(Assessed_Total) AS tvalue, count(*) AS n_buildings
         FROM out WHERE match_status = 'matched' GROUP BY parcel_id)
   GROUP BY town ORDER BY building_value DESC NULLS LAST
-) TO 'results_by_town.csv' (HEADER);
+) TO 'results/by_town.csv' (HEADER);
 
 -- By period built (buildings; year 0 or missing counted as unknown)
 COPY (
@@ -115,11 +115,11 @@ COPY (
               ELSE '2000 or later' END AS period_built,
          count(*) AS buildings
   FROM out WHERE match_status = 'matched' GROUP BY 1 ORDER BY 1
-) TO 'results_by_period_built.csv' (HEADER);
+) TO 'results/by_period_built.csv' (HEADER);
 
-SELECT use_group, buildings, parcels, building_value, building_value_ve, total_assessed_value FROM 'results_by_use.csv';
+SELECT use_group, buildings, parcels, building_value, building_value_ve, total_assessed_value FROM 'results/by_use.csv';
 
 -- Totals (value once per parcel)
 SELECT sum(building_value) AS building_value, sum(building_value_strict) AS building_value_strict,
        sum(building_value_ve) AS building_value_ve, sum(total_assessed_value) AS total_assessed_value
-FROM 'results_by_use.csv';
+FROM 'results/by_use.csv';

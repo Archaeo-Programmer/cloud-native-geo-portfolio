@@ -1,4 +1,5 @@
 -- Step 6: write New Haven County buildings in FEMA's 1% flood zone (SFHA) as GeoParquet.
+-- Run with:  duckdb < scripts/06_export_sfha_buildings.sql    (from the phase1-flood-buildings folder)
 -- One row per building that touches the SFHA; center_in_sfha marks the stricter point-inside rule.
 INSTALL spatial; LOAD spatial;
 
@@ -15,7 +16,7 @@ CREATE TABLE bldg AS
          names.primary AS name,
          sources[1].dataset AS source,
          geometry
-  FROM 'newhaven_buildings.parquet';
+  FROM 'data/newhaven_buildings.parquet';
 
 -- 3. For each building touching the SFHA: which zone codes, and is a point inside it in the zone?
 CREATE TABLE hits AS
@@ -34,9 +35,9 @@ CREATE TABLE out AS
 COPY (
   SELECT * FROM out
   ORDER BY ST_Hilbert(geometry, (SELECT ST_Extent(ST_Extent_Agg(geometry)) FROM out))
-) TO 'newhaven_sfha_buildings.parquet' (FORMAT parquet, COMPRESSION zstd);
+) TO 'data/newhaven_sfha_buildings.parquet' (FORMAT parquet, COMPRESSION zstd);
 
 -- 5. Self-check: these should match the earlier results (15,958 touching, 12,953 point-inside)
 SELECT count(*) AS buildings,
        count(*) FILTER (WHERE center_in_sfha) AS center_in_sfha
-FROM 'newhaven_sfha_buildings.parquet';
+FROM 'data/newhaven_sfha_buildings.parquet';

@@ -1,9 +1,10 @@
 -- Benchmark: the same question on FEMA's original polygons vs. the subdivided pieces.
+-- Run with:  duckdb < scripts/05_benchmark_subdivide.sql    (from the phase1-flood-buildings folder)
 -- Question: how many New Haven County buildings touch the 1% flood zone (SFHA)?
 INSTALL spatial; LOAD spatial;
 .timer on
 
-CREATE TABLE bldg AS SELECT id, geometry FROM 'newhaven_buildings.parquet';
+CREATE TABLE bldg AS SELECT id, geometry FROM 'data/newhaven_buildings.parquet';
 
 -- A. FEMA's original polygons (bronze): 6,881 polygons, the largest with 160,383 vertices
 CREATE TABLE zones_original AS

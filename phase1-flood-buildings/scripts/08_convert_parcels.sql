@@ -1,7 +1,7 @@
 -- Convert the downloaded parcel pages (GeoJSON) into one GeoParquet file.
 -- Source: Connecticut CAMA and Parcel Layer 2025 (CT GIS Office), New Haven County's 27 towns.
--- No owner or address fields were downloaded (see fetch_parcels.py).
--- Run with:  duckdb < convert_parcels.sql      (note: < feeds the file in; > would overwrite it)
+-- No owner or address fields were downloaded (see scripts/07_fetch_parcels.py).
+-- Run with:  duckdb < scripts/08_convert_parcels.sql      (note: < feeds the file in; > would overwrite it)
 INSTALL spatial; LOAD spatial;
 .timer on
 
@@ -21,10 +21,10 @@ CREATE TABLE parcels AS
 COPY (
   SELECT * FROM parcels
   ORDER BY ST_Hilbert(geometry, (SELECT ST_Extent(ST_Extent_Agg(geometry)) FROM parcels))
-) TO 'newhaven_parcels.parquet' (FORMAT parquet, COMPRESSION zstd);
+) TO 'data/newhaven_parcels.parquet' (FORMAT parquet, COMPRESSION zstd);
 
 -- 4. Checks: how many parcels (and how many had no shape), and a peek by town
 SELECT (SELECT count(*) FROM raw) AS downloaded,
        (SELECT count(*) FROM parcels) AS with_geometry;
-SELECT Town_Name, count(*) AS parcels FROM 'newhaven_parcels.parquet'
+SELECT Town_Name, count(*) AS parcels FROM 'data/newhaven_parcels.parquet'
 GROUP BY 1 ORDER BY parcels DESC LIMIT 5;

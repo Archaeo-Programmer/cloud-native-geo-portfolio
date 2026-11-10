@@ -3,7 +3,7 @@ Connecticut CAMA and Parcel Layer 2025 (CT GIS Office, public domain).
 
 Owner names, mailing addresses and street addresses are never requested.
 Pages of 2,000 parcels are saved to data/parcels_raw/ so a rerun resumes
-where it stopped. Run: python3 fetch_parcels.py
+where it stopped. Run: python3 scripts/07_fetch_parcels.py
 """
 import json
 import pathlib

@@ -13,7 +13,7 @@ with identical results. Between 13,000 and 16,000 of the county's 333,000 buildi
 the zone or only its center; about 3,000 buildings fall in between. Along the
 shoreline, 460 homes are situated in FEMA's highest-risk coastal wave zone.
 
-![Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands, Milford, CT](map_milford_coast.png)
+![Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands, Milford, CT](maps/milford_coast_flood.png)
 
 *Buildings in FEMA's 1% flood zone at Fort Trumbull Beach and Silver Sands State Park, Milford, CT.
 Dark red: a point inside the footprint is in the 1% zone. Orange: the building only partly touches it.
@@ -39,11 +39,11 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreet
 
 | How a building counts as "in" the zone | 1% flood zone | 0.2% flood zone |
 | --- | --- | --- |
-| Any part of the footprint touches it ([count_by_risk.sql](count_by_risk.sql)) | 15,958 (4.8%) | 4,207 (1.3%) |
-| A point inside the footprint is in it ([count_by_risk_point.sql](count_by_risk_point.sql)) | 12,953 (3.9%) | 3,693 (1.1%) |
+| Any part of the footprint touches it ([03_count_by_risk.sql](scripts/03_count_by_risk.sql)) | 15,958 (4.8%) | 4,207 (1.3%) |
+| A point inside the footprint is in it ([04_count_by_risk_point.sql](scripts/04_count_by_risk_point.sql)) | 12,953 (3.9%) | 3,693 (1.1%) |
 
 Each building is counted once, under its highest risk. Results:
-[results_by_risk.csv](results_by_risk.csv), [results_by_risk_point.csv](results_by_risk_point.csv).
+[by_risk.csv](results/by_risk.csv), [by_risk_point.csv](results/by_risk_point.csv).
 
 ## What's at risk
 
@@ -62,22 +62,22 @@ value** (land plus buildings) is shown for comparison only:
 Connecticut assesses property at 70% of market value, so the building value is roughly $4.1 to
 $5.3 billion at market.
 
-![Assessed building value at risk per H3 hexagon, New Haven County](map_value_hexagons.png)
+![Assessed building value at risk per H3 hexagon, New Haven County](maps/value_hexagons.png)
 
 *Assessed building value (structures only, not land) on parcels in the 1% flood zone, summed per
 H3 hexagon (resolution 8, about 0.7 km²), each parcel counted once. Value concentrates along the
 shoreline from Milford to Clinton, with inland pockets along the rivers, notably in Meriden and
 Hamden. A single large property can dominate a hexagon; the darkest cell north of New Haven is
-mostly one public school. Made with DuckDB's H3 extension ([map_value_layers.sql](map_value_layers.sql)) and QGIS.
+mostly one public school. Made with DuckDB's H3 extension ([10_map_value_layers.sql](scripts/10_map_value_layers.sql)) and QGIS.
 Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel Layer 2025. Basemap © OpenStreetMap contributors.*
 
 - **Use:** homes are most of it, but commercial and public property are large too. Four of the ten
   most valuable at-risk parcels (by total parcel value) are public schools.
 - **Place:** New Haven ($597M in building value), Milford ($526M), Branford ($456M), Madison ($351M)
-  and West Haven ($282M) lead ([results_by_town.csv](results_by_town.csv)).
+  and West Haven ($282M) lead ([by_town.csv](results/by_town.csv)).
 - **Age:** 81% of at-risk buildings with a known build year (11,721 of 14,541) were built before
   1980, and 39% between 1900 and 1949. Most likely predate modern floodplain building standards
-  ([results_by_period_built.csv](results_by_period_built.csv)).
+  ([by_period_built.csv](results/by_period_built.csv)).
 
 | Use | At-risk buildings | Building value, touch rule | Building value, strict rule | Building value in wave zone (VE) |
 | --- | --- | --- | --- | --- |
@@ -90,16 +90,16 @@ Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel La
 | Residential: condominium | 123 | $14M | $10M | $1M |
 | **Total** | **15,537** | **$3,714M** | **$2,859M** | **$415M** |
 
-Assessed building value (structures only), counted once per parcel ([results_by_use.csv](results_by_use.csv)). 67 matched
+Assessed building value (structures only), counted once per parcel ([by_use.csv](results/by_use.csv)). 67 matched
 buildings have a parcel with no use code and are left out of the table.
 
-![Assessed building value of at-risk buildings around New Haven Harbor](new-haven-buildings-assessment.png)
+![Assessed building value of at-risk buildings around New Haven Harbor](maps/new_haven_harbor_value.png)
 
 *At-risk buildings around New Haven Harbor, shaded by assessed building value. One building per
 parcel (the largest) carries the parcel's building value; garages, outbuildings, storage tanks and
 buildings without assessor data are gray. Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel Layer 2025. Basemap © OpenStreetMap contributors.*
 
-**How buildings were matched to parcels** ([join_parcels.sql](join_parcels.sql)):
+**How buildings were matched to parcels** ([09_join_parcels.sql](scripts/09_join_parcels.sql)):
 
 - A building belongs to the parcel that holds the largest share of its footprint. Near-ties (within
   5 percentage points) go to the parcel with assessor data, then the smaller parcel.
@@ -113,13 +113,13 @@ buildings without assessor data are gray. Data: FEMA NFHL; Overture Maps (OpenSt
 
 ## More maps
 
-![Buildings in FEMA's 1% flood zone along the West River, Westville, New Haven](Westville-flood.png)
+![Buildings in FEMA's 1% flood zone along the West River, Westville, New Haven](maps/westville_flood.png)
 
 *West River, Westville, New Haven. The 1% flood zone follows the river miles inland, through
 residential streets and around commercial buildings. Dark red: center inside the 1% zone. Orange:
 partly in the zone. Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft). Basemap © OpenStreetMap contributors.*
 
-![Buildings in FEMA's 1% flood zone around New Haven Harbor](new-haven-flood.png)
+![Buildings in FEMA's 1% flood zone around New Haven Harbor](maps/new_haven_harbor_flood.png)
 
 *New Haven Harbor. The rail yard near Union Station, Long Wharf and port facilities on both shores,
 including what appear to be fuel storage tanks, sit in the 1% flood zone next to the coastal wave
@@ -136,7 +136,7 @@ it all when FEMA updates its maps. Here the whole pipeline is scripted: the buil
 A big part of the speed comes from the shape of the data. FEMA's flood polygons can be enormous,
 with the largest in New Haven County at 160,383 vertices, so every nearby building is tested
 against thousands of edges. Splitting them into pieces of at most 100 vertices gives the same
-answer much faster ([benchmark_subdivide.sql](benchmark_subdivide.sql)):
+answer much faster ([05_benchmark_subdivide.sql](scripts/05_benchmark_subdivide.sql)):
 
 | Flood zones used | Buildings touching the 1% zone | Time |
 | --- | --- | --- |
@@ -147,8 +147,8 @@ The parcel data showed the same gap in data delivery. Connecticut publishes its 
 a web service that returns 2,000 records per request; getting New Haven County's 284,920 parcels
 took about 35 minutes, with retries for server errors. Overture's 582,882 buildings, stored as
 GeoParquet in cloud storage, took 8 seconds. Converted once to GeoParquet, the parcels shrank from
-358 MB to 56 MB and load in about a second ([fetch_parcels.py](fetch_parcels.py),
-[convert_parcels.sql](convert_parcels.sql)).
+358 MB to 56 MB and load in about a second ([07_fetch_parcels.py](scripts/07_fetch_parcels.py),
+[08_convert_parcels.sql](scripts/08_convert_parcels.sql)).
 
 A spatial index helps in the same way. In the workshop pipeline, a single-point flood lookup took
 0.09 ms with an R-tree index versus 78.6 ms without. All timings are from an Apple Silicon Mac with
@@ -163,15 +163,42 @@ DuckDB 1.5.
 3. Download Overture Maps buildings for that box with `overturemaps download`. It reads only the
    parts of Overture's cloud files that cover the area.
 4. Convert the flood zones to the buildings' coordinate system and compare them in DuckDB
-   ([count_buildings.sql](count_buildings.sql), [count_by_risk.sql](count_by_risk.sql),
-   [count_by_risk_point.sql](count_by_risk_point.sql)).
-5. Export the at-risk buildings as GeoParquet ([export_sfha_buildings.sql](export_sfha_buildings.sql))
+   ([02_count_buildings.sql](scripts/02_count_buildings.sql), [03_count_by_risk.sql](scripts/03_count_by_risk.sql),
+   [04_count_by_risk_point.sql](scripts/04_count_by_risk_point.sql)).
+5. Export the at-risk buildings as GeoParquet ([06_export_sfha_buildings.sql](scripts/06_export_sfha_buildings.sql))
    and map them in QGIS.
-6. Download New Haven County's parcels with assessor data ([fetch_parcels.py](fetch_parcels.py)),
+6. Download New Haven County's parcels with assessor data ([07_fetch_parcels.py](scripts/07_fetch_parcels.py)),
    without owner or address fields, and convert them to GeoParquet
-   ([convert_parcels.sql](convert_parcels.sql)).
+   ([08_convert_parcels.sql](scripts/08_convert_parcels.sql)).
 7. Match each at-risk building to its parcel and summarize use, value and age
-   ([join_parcels.sql](join_parcels.sql)).
+   ([09_join_parcels.sql](scripts/09_join_parcels.sql)).
+
+## Reproduce
+
+Run everything from this folder. Requires [uv](https://docs.astral.sh/uv/), DuckDB 1.5 and Python 3,
+plus the FEMA flood zones produced by the
+[nfhl-geoparquet-workshop](https://github.com/gsueur/nfhl-geoparquet-workshop) pipeline in
+`../../FEMA/nfhl-geoparquet-workshop`. Large files are written to `data/`, which is not in git.
+
+```bash
+bash scripts/01_download_buildings.sh          # Overture buildings -> data/
+duckdb < scripts/02_count_buildings.sql        # buildings by FEMA zone code
+duckdb < scripts/03_count_by_risk.sql          # by risk, any-part rule -> results/by_risk.csv
+duckdb < scripts/04_count_by_risk_point.sql    # by risk, point rule -> results/by_risk_point.csv
+duckdb < scripts/05_benchmark_subdivide.sql    # original vs. subdivided polygons
+duckdb < scripts/06_export_sfha_buildings.sql  # at-risk buildings -> data/
+python3 scripts/07_fetch_parcels.py            # CT parcels + assessor data (about 35 min)
+duckdb < scripts/08_convert_parcels.sql        # parcels -> GeoParquet
+duckdb < scripts/09_join_parcels.sql           # use, value, age -> results/by_use, by_town, by_period_built
+duckdb < scripts/10_map_value_layers.sql       # map layers (buildings by value, H3 hexagons) -> data/
+```
+
+| Folder | Contents |
+| --- | --- |
+| `scripts/` | The pipeline, numbered in run order |
+| `results/` | Summary tables (CSV) |
+| `maps/` | Exported maps (made in QGIS) |
+| `data/` | Local GeoParquet inputs and outputs, not in git |
 
 ## Deliverables
 
