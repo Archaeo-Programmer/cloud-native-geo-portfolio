@@ -11,7 +11,7 @@ the problem, the data, the approach, a measured result and what was delivered.
 
 | Phase | Project | Stack | Status |
 | --- | --- | --- | --- |
-| 1 | [Buildings in FEMA flood zones](phase1-flood-buildings/) | GeoParquet, DuckDB spatial, Overture Maps | In progress |
+| 1 | [Buildings in FEMA flood zones](phase1-flood-buildings/) | GeoParquet, DuckDB spatial, Overture Maps | Done |
 | 2 | Static STAC catalog | STAC, rustac, Source Cooperative | Planned |
 | 3 | NASA imagery as web tiles | COG, earthaccess, TiTiler | Planned |
 | 4 | Virtual data cube | Zarr, VirtualiZarr, Icechunk, xarray | Planned |
