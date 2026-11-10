@@ -62,6 +62,15 @@ value** (land plus buildings) is shown for comparison only:
 Connecticut assesses property at 70% of market value, so the building value is roughly $4.1 to
 $5.3 billion at market.
 
+![Assessed building value at risk per H3 hexagon, New Haven County](map_value_hexagons.png)
+
+*Assessed building value (structures only, not land) on parcels in the 1% flood zone, summed per
+H3 hexagon (resolution 8, about 0.7 km²), each parcel counted once. Value concentrates along the
+shoreline from Milford to Clinton, with inland pockets along the rivers, notably in Meriden and
+Hamden. A single large property can dominate a hexagon; the darkest cell north of New Haven is
+mostly one public school. Made with DuckDB's H3 extension ([map_value_layers.sql](map_value_layers.sql)) and QGIS.
+Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel Layer 2025. Basemap © OpenStreetMap contributors.*
+
 - **Use:** homes are most of it, but commercial and public property are large too. Four of the ten
   most valuable at-risk parcels (by total parcel value) are public schools.
 - **Place:** New Haven ($597M in building value), Milford ($526M), Branford ($456M), Madison ($351M)
@@ -83,6 +92,12 @@ $5.3 billion at market.
 
 Assessed building value (structures only), counted once per parcel ([results_by_use.csv](results_by_use.csv)). 67 matched
 buildings have a parcel with no use code and are left out of the table.
+
+![Assessed building value of at-risk buildings around New Haven Harbor](new-haven-buildings-assessment.png)
+
+*At-risk buildings around New Haven Harbor, shaded by assessed building value. One building per
+parcel (the largest) carries the parcel's building value; garages, outbuildings, storage tanks and
+buildings without assessor data are gray. Data: FEMA NFHL; Overture Maps (OpenStreetMap, Microsoft); CT CAMA and Parcel Layer 2025. Basemap © OpenStreetMap contributors.*
 
 **How buildings were matched to parcels** ([join_parcels.sql](join_parcels.sql)):
 
@@ -168,7 +183,8 @@ DuckDB 1.5.
 - **Summary tables** as CSV: by flood risk for both counting rules, and by use, town and period
   built for the parcel analysis.
 - **Reproducible SQL scripts** for every number on this page.
-- **Maps** of the Milford coast, the West River in Westville and New Haven Harbor (above).
+- **Maps** of the Milford coast, the West River in Westville and New Haven Harbor, plus two value
+  maps: building value by hexagon (county) and by building (New Haven Harbor).
 
 ## Data notes and limitations
 
