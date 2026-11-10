@@ -3,3 +3,4 @@
 | Date | Repo | Link | What I did | What I learned |
 | --- | --- | --- | --- | --- |
 | 2026-11-09 | [gsueur/nfhl-geoparquet-workshop](https://github.com/gsueur/nfhl-geoparquet-workshop) | [PR #2](https://github.com/gsueur/nfhl-geoparquet-workshop/pull/2) (open) | Docs: repeat `--county` per county and quote county names containing a space | Shells split arguments at spaces before a program sees them, so `--county New Haven` arrives as two values; confirmed on current main before opening the PR |
+| 2026-11-09 | [gsueur/nfhl-geoparquet-workshop](https://github.com/gsueur/nfhl-geoparquet-workshop) | [Comment on PR #1](https://github.com/gsueur/nfhl-geoparquet-workshop/pull/1#issuecomment-6758945782) | Review comment supporting a PR that adds the DuckDB CLI to the workshop setup, confirming the `duckdb: command not found` problem from my own workshop run | A specific "I hit this too" with the exact error helps maintainers judge a fix; a bare "+1" doesn't |
